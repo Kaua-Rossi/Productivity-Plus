@@ -10,28 +10,35 @@
     <body class="bg-gray-900 font-sans flex min-h-screen flex-col">
         <header class="bg-gray-950 p-2 flex flex-row justify-center text-center">
             <h1 class="mx-2 md:text-4xl text-3xl text-gray-50 font-light">Productivity Plus</h1>
-            <svg class="fill-fuchsia-400 md:h-10 md:w-10 h-8 w-8" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
+            <svg class="fill-fuchsia-400 md:h-10 md:w-10 h-8 w-8 hover:fill-fuchsia-500 transition" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false">
                 <path
                     d="M864 512a32 32 0 0 0-32 32v96a32 32 0 0 0 64 0v-96a32 32 0 0 0-32-32zm17.92-122.56a23.68 23.68 0 0 0-5.76-2.88 19.84 19.84 0 0 0-6.08-1.92 32 32 0 0 0-28.8 8.64A32 32 0 0 0 832 416a32 32 0 1 0 64 0 33.6 33.6 0 0 0-9.28-22.72z"
                 />
                 <path
                     d="M800 128h-32a96 96 0 0 0-96-96H352a96 96 0 0 0-96 96h-32a96 96 0 0 0-96 93.44v677.12A96 96 0 0 0 224 992h576a96 96 0 0 0 96-93.44V736a32 32 0 0 0-64 0v162.56A32 32 0 0 1 800 928H224a32 32 0 0 1-32-29.44V221.44A32 32 0 0 1 224 192h32a96 96 0 0 0 96 96h320a96 96 0 0 0 96-96h32a32 32 0 0 1 32 29.44V288a32 32 0 0 0 64 0v-66.56A96 96 0 0 0 800 128zm-96 64a32 32 0 0 1-32 32H352a32 32 0 0 1-32-32v-64a32 32 0 0 1 32-32h320a32 32 0 0 1 32 32z"
                 />
-                <path
-                    d="M712.32 426.56 448 721.6 310.72 585.28a32 32 0 0 0-45.12 45.12l160 160A32 32 0 0 0 448 800a32 32 0 0 0 23.04-10.56l288-320a32 32 0 0 0-47.68-42.88z"
-                />
+                <path d="M712.32 426.56 448 721.6 310.72 585.28a32 32 0 0 0-45.12 45.12l160 160A32 32 0 0 0 448 800a32 32 0 0 0 23.04-10.56l288-320a32 32 0 0 0-47.68-42.88z" />
             </svg>
         </header>
         <main class="flex-grow place-content-center">
             <div class="p-4 container mx-auto">
                 <div class="gap-4 md:flex-nowrap md:flex-row flex flex-col justify-center">
                     <section class="content-box">
+                        <!-- TO DO: Implement Spotify/YouTube API functionality -->
                         <h2 class="box-text">Spotify/Youtube API</h2>
                     </section>
                     <section class="content-box">
-                        <h2 class="box-text">Pomodoro/Flowmodoro/Cronometer/Timer</h2>
+                        <h2 class="box-text">Timer</h2>
+                        <div id="timer-display" class="m-8 mb-16 pb-4 md:text-8xl text-6xl text-gray-50 text-center">00:00:00</div>
+                        <div class="mt-4 flex justify-around">
+                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="setTimerPopup()">Set</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerSetStatus(true)">Start</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerSetStatus(false)">Pause</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerReset()">Reset</button>
+                        </div>
                     </section>
                     <section class="content-box">
+                        <!-- TO DO: Implement Checklist functionality -->
                         <h2 class="box-text">Checklist</h2>
                     </section>
                 </div>
@@ -40,5 +47,63 @@
         <footer class="bg-gray-950 p-2 text-center">
             <p class="text-gray-50 font-medium">&copy; 2025 Kauã Rossi - Productivity Plus</p>
         </footer>
+
+        <div id="timer-set-popup" class="inset-0 bg-black/50 fixed flex hidden items-center justify-center">
+            <div class="bg-gray-800 p-6 rounded w-80">
+                <h2 class="text-2xl text-gray-50 mb-4 text-center">Set Timer</h2>
+                <form id="timer-form" class="space-y-4" method="post">
+                    <div>
+                        <label for="hours" class="text-gray-50 mb-1 block">Hours</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="hours"
+                            name="hours"
+                            min="0"
+                            max="23"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label for="minutes" class="text-gray-50 mb-1 block">Minutes</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="minutes"
+                            name="minutes"
+                            min="0"
+                            max="59"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label for="seconds" class="text-gray-50 mb-1 block">Seconds</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="seconds"
+                            name="seconds"
+                            min="0"
+                            max="59"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div class="space-x-4 mt-4 flex justify-end">
+                        <button
+                            type="button"
+                            id="cancel-button"
+                            class="bg-gray-600 text-gray-200 py-2 px-4 rounded hover:bg-gray-500 transition"
+                            onclick="document.querySelector('#timer-set-popup').classList.add('hidden')"
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" id="set-timer-button" class="bg-fuchsia-400 text-gray-800 py-2 px-4 rounded hover:bg-fuchsia-500 transition">Set Timer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
