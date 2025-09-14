@@ -1,0 +1,22 @@
+{
+    "name": "projectproductivityplus",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "npx tailwindcss -i ./src/css/input.css -o ./dist/output.css",
+        "watch": "npx tailwindcss -i ./src/css/input.css -o ./dist/output.css --watch",
+        "format": "npx prettier --write ."
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@tailwindcss/cli": "^4.1.13",
+        "tailwindcss": "^4.1.13"
+    },
+    "devDependencies": {
+        "prettier": "^3.6.2",
+        "prettier-plugin-tailwindcss": "^0.6.14"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "tabWidth": 4,
+    "useTabs": false,
+    "printWidth": 160,
+    "plugins": ["prettier-plugin-tailwindcss"],
+    "tailwindStylesheet": "./dist/output.css"
+}

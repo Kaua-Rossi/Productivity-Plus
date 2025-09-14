@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@layer components {
+    .content-box {
+        @apply rounded-md bg-gray-700/70 p-4 border-gray-600/60 hover:bg-gray-600/70 focus-within:bg-gray-600/70 basis-1/3 border transition-colors outline-none;
+    }
+
+    .box-text {
+        @apply text-gray-50 font-light text-center;
+    }
+}
