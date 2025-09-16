@@ -28,13 +28,18 @@
                         <h2 class="box-text">Spotify/Youtube API</h2>
                     </section>
                     <section class="content-box">
-                        <h2 class="box-text">Timer</h2>
-                        <div id="timer-display" class="m-8 mb-16 pb-4 md:text-8xl text-6xl text-gray-50 text-center">00:00:00</div>
+                        <div class="mb-4 flex justify-around">
+                            <button id="timer-button" class="bg-gray-800 text-gray-50 font-bold py-2 px-4 rounded-2xl hover:bg-fuchsia-500 transition">Timer</button>
+                            <button id="stopwatch-button" class="bg-gray-800 text-gray-50 font-bold py-2 px-4 rounded-2xl hover:bg-fuchsia-500 transition">Stopwatch</button>
+                            <button id="pomodoro-button" class="bg-gray-800 text-gray-50 font-bold py-2 px-4 rounded-2xl hover:bg-fuchsia-500 transition">Pomodoro</button>
+                            <button id="flowmodoro-button" class="bg-gray-800 text-gray-50 font-bold py-2 px-4 rounded-2xl hover:bg-fuchsia-500 transition">Flowmodoro</button>
+                        </div>
+                        <div id="timer-display" class="m-16 pb-4 md:text-8xl text-6xl text-gray-50 text-center">00:00:00</div>
                         <div class="mt-4 flex justify-around">
-                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="setTimerPopup()">Set</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerSetStatus(true)">Start</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerSetStatus(false)">Pause</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-bold py-2 px-4 rounded hover:bg-fuchsia-500 transition" onclick="timerReset()">Reset</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="setTimerPopup()">Set</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerSetStatus(true)">Start</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerSetStatus(false)">Pause</button>
+                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerReset()">Reset</button>
                         </div>
                     </section>
                     <section class="content-box">
