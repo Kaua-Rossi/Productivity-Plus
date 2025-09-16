@@ -9,6 +9,7 @@ class Timer {
     }
 
     set(h = 0, m = 0, s = 0) {
+        this.pause();
         this.hours = parseInt(h) || 0;
         this.minutes = parseInt(m) || 0;
         this.seconds = parseInt(s) || 0;
@@ -43,6 +44,7 @@ class Timer {
     start() {
         if (this.running) return;
         this.running = true;
+        clearInterval(this.interval);
         this.interval = setInterval(() => this.tick(), 1000);
         console.log("Timer started");
     }
@@ -61,8 +63,89 @@ class Timer {
     }
 }
 
+class Stopwatch extends Timer {
+    tick() {
+        if (!this.running) return;
+
+        this.seconds++;
+
+        if (this.seconds >= 60) {
+            this.seconds = 0;
+            this.minutes++;
+        }
+        if (this.minutes >= 60) {
+            this.minutes = 0;
+            this.hours++;
+        }
+        this.updateDisplay();
+    }
+}
+
 const timerDisplay = document.querySelector("#timer-display");
-const mainTimer = new Timer(timerDisplay);
+let mainTimer;
+
+let timerTypeButtons = {
+    timer: document.querySelector("#timer-button"),
+    stopwatch: document.querySelector("#stopwatch-button"),
+    /*
+    pomodoro: document.querySelector("#pomodoro-button"), (to be implemented)
+    flowmodoro: document.querySelector("#flowmodoro-button") (to be implemented)
+    */
+};
+
+let timerClasses = {
+    timer: Timer,
+    stopwatch: Stopwatch,
+    /*
+    pomodoro: Pomodoro, (to be implemented)
+    flowmodoro: Flowmodoro (to be implemented)
+    */
+};
+
+/**
+ * Switches the active timer type to another one.
+ * @param {string} type - The type of timer to switch to ("timer", "stopwatch", etc.).
+ */
+function switchTimerType(type) {
+    if (mainTimer) {
+        mainTimer.pause();
+    }
+
+    const TimerClass = timerClasses[type];
+    if (!TimerClass) {
+        console.error(`Timer type "${type}" is not implemented.`);
+        return;
+    }
+    mainTimer = new TimerClass(timerDisplay);
+    mainTimer.reset();
+
+    for (let key in timerTypeButtons) {
+        if (key === type) {
+            timerTypeButtons[key].classList.add("active-timer-button");
+            timerTypeButtons[key].classList.remove("inactive-timer-button");
+        } else {
+            timerTypeButtons[key].classList.remove("active-timer-button");
+            timerTypeButtons[key].classList.add("inactive-timer-button");
+        }
+    }
+
+    if (type === "timer") {
+        document.querySelector("#set-time-button").classList.add("inline-block");
+        document.querySelector("#set-time-button").classList.remove("hidden");
+    } else {
+        document.querySelector("#set-time-button").classList.add("hidden");
+        document.querySelector("#set-time-button").classList.remove("inline-block");
+    }
+
+    console.log(`Switched to ${type}`);
+}
+
+document.querySelector("#timer-button").addEventListener("click", () => switchTimerType("timer"));
+document.querySelector("#stopwatch-button").addEventListener("click", () => switchTimerType("stopwatch"));
+document.querySelector("#pomodoro-button").addEventListener("click", () => switchTimerType("pomodoro")); // (to be implemented)
+document.querySelector("#flowmodoro-button").addEventListener("click", () => switchTimerType("flowmodoro")); // (to be implemented)
+
+switchTimerType("timer"); // default
 
 function setupSetTimerPopup() {
     const popup = document.querySelector("#timer-set-popup");

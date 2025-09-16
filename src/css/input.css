@@ -8,4 +8,12 @@
     .box-text {
         @apply text-gray-50 font-light text-center;
     }
+
+    .active-timer-button {
+        @apply bg-fuchsia-500;
+    }
+
+    .inactive-timer-button {
+        @apply bg-gray-800;
+    }
 }
