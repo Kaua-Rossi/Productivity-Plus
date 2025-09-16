@@ -1,73 +1,89 @@
-let timerRunning = false;
+class Timer {
+    constructor(displayElement) {
+        this.displayElement = displayElement;
+        this.hours = 0;
+        this.minutes = 0;
+        this.seconds = 0;
+        this.running = false;
+        this.interval = null;
+    }
 
-function setTimerPopup() {
-    document.querySelector("#timer-set-popup").classList.remove("hidden");
-    document.querySelector("#timer-form").addEventListener("submit", (e) => {
+    set(h = 0, m = 0, s = 0) {
+        this.hours = parseInt(h) || 0;
+        this.minutes = parseInt(m) || 0;
+        this.seconds = parseInt(s) || 0;
+        this.updateDisplay();
+        console.log(`Timer set to ${this.displayElement.textContent}`);
+    }
+
+    updateDisplay() {
+        this.displayElement.textContent = String(this.hours).padStart(2, "0") + ":" + String(this.minutes).padStart(2, "0") + ":" + String(this.seconds).padStart(2, "0");
+    }
+
+    tick() {
+        if (!this.running) return;
+
+        if (this.seconds > 0) {
+            this.seconds--;
+        } else if (this.minutes > 0) {
+            this.minutes--;
+            this.seconds = 59;
+        } else if (this.hours > 0) {
+            this.hours--;
+            this.minutes = 59;
+            this.seconds = 59;
+        } else {
+            console.log("Timer finished");
+            this.running = false;
+            return;
+        }
+        this.updateDisplay();
+    }
+
+    start() {
+        if (this.running) return;
+        this.running = true;
+        this.interval = setInterval(() => this.tick(), 1000);
+        console.log("Timer started");
+    }
+
+    pause() {
+        if (!this.running) return;
+        this.running = false;
+        clearInterval(this.interval);
+        console.log("Timer paused");
+    }
+
+    reset() {
+        this.pause();
+        this.set(0, 0, 0);
+        console.log("Timer reset");
+    }
+}
+
+const timerDisplay = document.querySelector("#timer-display");
+const mainTimer = new Timer(timerDisplay);
+
+function setupSetTimerPopup() {
+    const popup = document.querySelector("#timer-set-popup");
+    const form = document.querySelector("#timer-form");
+
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-        document.querySelector("#timer-set-popup").classList.add("hidden");
-        setTimer(document.querySelector("#hours").value, document.querySelector("#minutes").value, document.querySelector("#seconds").value);
+        popup.classList.add("hidden");
+        mainTimer.set(document.querySelector("#hours").value, document.querySelector("#minutes").value, document.querySelector("#seconds").value);
     });
+
+    window.showSetTimerPopup = function () {
+        popup.classList.remove("hidden");
+    };
+
     return;
 }
 
-function setTimer(hours = 0, minutes = 0, seconds = 0) {
-    try {
-        if (isNaN(parseInt(hours))) throw "Invalid hours";
-        if (isNaN(parseInt(minutes))) throw "Invalid minutes";
-        if (isNaN(parseInt(seconds))) throw "Invalid seconds";
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
+setupSetTimerPopup();
 
-    let timerDisplay = document.querySelector("#timer-display");
-    timerDisplay.textContent = String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
-    console.log(`Timer set to ${timerDisplay.textContent}`);
-    return true;
-}
-
-function timerSetStatus(bool) {
-    if (typeof bool !== "boolean") {
-        console.error("Invalid argument: not a boolean");
-        return false;
-    }
-    timerRunning = bool;
-    console.log(`Timer running status set to ${timerRunning}`);
-    return true;
-}
-
-function timerTick() {
-    if (!timerRunning) return;
-
-    let timerDisplay = document.querySelector("#timer-display");
-    let hours, minutes, seconds;
-    hours = parseInt(timerDisplay.textContent.split(":")[0]);
-    minutes = parseInt(timerDisplay.textContent.split(":")[1]);
-    seconds = parseInt(timerDisplay.textContent.split(":")[2]);
-
-    if (seconds > 0) {
-        seconds--;
-    } else if (minutes > 0) {
-        minutes--;
-        seconds = 59;
-    } else if (hours > 0) {
-        hours--;
-        minutes = 59;
-        seconds = 59;
-    } else {
-        // Timer finished
-        console.log("Timer finished");
-        timerSetStatus(false);
-        return;
-    }
-    timerDisplay.textContent = String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
-}
-
-setInterval(timerTick, 1000);
-
-function timerReset() {
-    setTimer(0, 0, 0);
-    timerSetStatus(false);
-    console.log("Timer reset");
-    return true;
-}
+document.querySelector("#set-time-button").addEventListener("click", () => showSetTimerPopup());
+document.querySelector("#start-button").addEventListener("click", () => mainTimer.start());
+document.querySelector("#stop-button").addEventListener("click", () => mainTimer.pause());
+document.querySelector("#reset-button").addEventListener("click", () => mainTimer.reset());

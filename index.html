@@ -36,10 +36,30 @@
                         </div>
                         <div id="timer-display" class="m-16 pb-4 md:text-8xl text-6xl text-gray-50 text-center">00:00:00</div>
                         <div class="mt-4 flex justify-around">
-                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="setTimerPopup()">Set</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerSetStatus(true)">Start</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerSetStatus(false)">Pause</button>
-                            <button class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-2 outline-fuchsia-300 hover:bg-fuchsia-500 transition" onclick="timerReset()">Reset</button>
+                            <button
+                                id="set-time-button"
+                                class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-fuchsia-300 hover:bg-fuchsia-500 outline-2 transition"
+                            >
+                                Set
+                            </button>
+                            <button
+                                id="start-button"
+                                class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-fuchsia-300 hover:bg-fuchsia-500 outline-2 transition"
+                            >
+                                Start
+                            </button>
+                            <button
+                                id="stop-button"
+                                class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-fuchsia-300 hover:bg-fuchsia-500 outline-2 transition"
+                            >
+                                Pause
+                            </button>
+                            <button
+                                id="reset-button"
+                                class="bg-fuchsia-400 text-gray-800 font-medium py-2 px-4 rounded outline-fuchsia-300 hover:bg-fuchsia-500 outline-2 transition"
+                            >
+                                Reset
+                            </button>
                         </div>
                     </section>
                     <section class="content-box">
