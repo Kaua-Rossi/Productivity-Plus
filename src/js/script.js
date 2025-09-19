@@ -35,16 +35,15 @@ class Timer {
             this.seconds = 59;
         } else {
             console.log("Timer finished");
-            this.running = false;
+            this.pause();
             return;
         }
         this.updateDisplay();
     }
 
     start() {
-        if (this.running) return;
+        if (this.running || (this.hours === 0 && this.minutes === 0 && this.seconds === 0 && this.constructor === Timer)) return;
         this.running = true;
-        clearInterval(this.interval);
         this.interval = setInterval(() => this.tick(), 1000);
         console.log("Timer started");
     }
@@ -170,3 +169,35 @@ document.querySelector("#set-time-button").addEventListener("click", () => showS
 document.querySelector("#start-button").addEventListener("click", () => mainTimer.start());
 document.querySelector("#stop-button").addEventListener("click", () => mainTimer.pause());
 document.querySelector("#reset-button").addEventListener("click", () => mainTimer.reset());
+
+document.querySelector("#checklist-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const input = document.querySelector("#checklist-input");
+    const taskText = input.value.trim();
+    if (taskText === "") return;
+
+    const checklistItem = document.createElement("div");
+    checklistItem.classList.add("flex", "items-center", "mb-2", "bg-gray-800", "rounded", "p-2");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("mr-2", "ml-2", "w-4", "h-4", "accent-fuchsia-400");
+
+    const span = document.createElement("span");
+    span.classList.add("text-gray-50");
+    span.textContent = taskText;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "✕";
+    deleteButton.classList.add("ml-auto", "text-red-400", "hover:text-red-500", "font-bold", "text-lg", "focus:outline-none", "transition");
+    deleteButton.addEventListener("click", () => {
+        checklistItem.remove();
+    });
+
+    checklistItem.appendChild(checkbox);
+    checklistItem.appendChild(span);
+    checklistItem.appendChild(deleteButton);
+
+    document.querySelector("#checklist-box").appendChild(checklistItem);
+    input.value = "";
+});

@@ -29,8 +29,8 @@
                     </section>
                     <section class="content-box">
                         <div class="mb-4 flex justify-around">
-                                <button id="timer-button" class="active-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Timer</button>
-                                <button id="stopwatch-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Stopwatch</button>
+                            <button id="timer-button" class="active-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Timer</button>
+                            <button id="stopwatch-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Stopwatch</button>
                             <button id="pomodoro-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Pomodoro</button>
                             <button id="flowmodoro-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Flowmodoro</button>
                         </div>
@@ -64,7 +64,19 @@
                     </section>
                     <section class="content-box">
                         <!-- TO DO: Implement Checklist functionality -->
-                        <h2 class="box-text">Checklist</h2>
+                        <form id="checklist-form" class="flex flex-row justify-around">
+                            <input
+                                autocomplete="off"
+                                type="text"
+                                id="checklist-input"
+                                placeholder="Add new task"
+                                class="p-2 mb-4 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-3/4 border transition-all duration-500 focus:ring-2 focus:outline-none"
+                            />
+                            <button type="submit" class="bg-fuchsia-400 text-gray-800 p-2 mb-4 rounded outline-fuchsia-300 hover:bg-fuchsia-500 w-1/6 outline-2 transition">
+                                Add
+                            </button>
+                        </form>
+                        <div id="checklist-box" class="max-h-56 overflow-y-auto"></div>
                     </section>
                 </div>
             </div>
