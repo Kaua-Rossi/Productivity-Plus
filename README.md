@@ -15,8 +15,8 @@ This project is being developed as the final project for Harvard's CS50x 2025 co
 * **Basic Timer** ✅
 * **Stopwatch** ✅
 * **Checklist** ✅
+* **Pomodoro Timer** ✅
 ### Coming soon
-* **Pomodoro Timer** ⌛
 * **Flowmodoro Timer** ⌛
 * **Spotify Integration** ⌛
 * **Youtube Integration** ⌛
