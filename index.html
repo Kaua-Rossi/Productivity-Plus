@@ -34,6 +34,7 @@
                             <button id="pomodoro-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Pomodoro</button>
                             <button id="flowmodoro-button" class="inactive-timer-button text-gray-50 font-bold py-2 px-4 rounded-2xl transition">Flowmodoro</button>
                         </div>
+                        <div id="state-text" class="text-center text-gray-50 text-3xl"></div>
                         <div id="timer-display" class="m-16 pb-4 md:text-8xl text-6xl text-gray-50 text-center">00:00:00</div>
                         <div class="mt-4 flex justify-around">
                             <button
@@ -63,7 +64,6 @@
                         </div>
                     </section>
                     <section class="content-box">
-                        <!-- TO DO: Implement Checklist functionality -->
                         <form id="checklist-form" class="flex flex-row justify-around">
                             <input
                                 autocomplete="off"
@@ -122,6 +122,58 @@
                             autocomplete="off"
                             id="seconds"
                             name="seconds"
+                            min="0"
+                            max="59"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div class="space-x-4 mt-4 flex justify-end">
+                        <button
+                            type="button"
+                            id="cancel-button"
+                            class="bg-gray-600 text-gray-200 py-2 px-4 rounded hover:bg-gray-500 transition"
+                            onclick="document.querySelector('#timer-set-popup').classList.add('hidden')"
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" id="set-timer-button" class="bg-fuchsia-400 text-gray-800 py-2 px-4 rounded hover:bg-fuchsia-500 transition">Set Timer</button>
+                    </div>
+                </form>
+                <form id="timer-form-pomodoro" class="space-y-4" method="post">
+                    <div>
+                        <label for="work-minutes" class="text-gray-50 mb-1 block">Work Minutes</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="work-minutes"
+                            name="work-minutes"
+                            min="0"
+                            max="59"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label for="break-minutes" class="text-gray-50 mb-1 block">Break Minutes</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="break-minutes"
+                            name="break-minutes"
+                            min="0"
+                            max="59"
+                            value="0"
+                            class="p-2 rounded bg-gray-700 text-gray-50 border-gray-600 focus:ring-fuchsia-400 w-full border transition-all duration-500 focus:ring-2 focus:outline-none"
+                        />
+                    </div>
+                    <div>
+                        <label for="big-break-minutes" class="text-gray-50 mb-1 block">Big Break Minutes</label>
+                        <input
+                            type="number"
+                            autocomplete="off"
+                            id="big-break-minutes"
+                            name="big-break-minutes"
                             min="0"
                             max="59"
                             value="0"
