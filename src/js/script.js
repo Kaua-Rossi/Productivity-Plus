@@ -138,7 +138,7 @@ class Pomodoro extends Timer {
             if (this.working) {
                 this.pomodorosCompleted++;
                 console.log(`Pomodoro completed! Total completed: ${this.pomodorosCompleted}`);
-                
+
                 if (this.pomodorosCompleted % 4 === 0) {
                     this.bigBreakSfx.play();
                     this.minutes = this.bigBreakMinutes;
@@ -296,28 +296,37 @@ document.querySelector("#start-button").addEventListener("click", () => mainTime
 document.querySelector("#stop-button").addEventListener("click", () => mainTimer.pause());
 document.querySelector("#reset-button").addEventListener("click", () => mainTimer.reset());
 
-document.querySelector("#checklist-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const input = document.querySelector("#checklist-input");
-    const taskText = input.value.trim();
-    if (taskText === "") return;
+let tasks = [{}];
 
+function createTask(task) {
     const checklistItem = document.createElement("div");
     checklistItem.classList.add("flex", "items-center", "mb-2", "bg-gray-800", "rounded", "p-2");
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("mr-2", "ml-2", "w-4", "h-4", "accent-fuchsia-400");
+    checkbox.checked = task["completed"];
+    checkbox.addEventListener("change", () => {
+        task["completed"] = checkbox.checked;
+        if (storageAvailable("localStorage")) {
+            localStorage.setItem("checklistTasks", JSON.stringify(tasks));
+        }
+    });
 
     const span = document.createElement("span");
     span.classList.add("text-gray-50");
-    span.textContent = taskText;
+    span.textContent = task["text"];
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "X";
     deleteButton.classList.add("ml-auto", "text-red-400", "hover:text-red-500", "font-bold", "text-lg", "focus:outline-none", "transition");
     deleteButton.addEventListener("click", () => {
         checklistItem.remove();
+        tasks.splice(tasks.indexOf(task), 1);
+
+        if (storageAvailable("localStorage")) {
+            localStorage.setItem("checklistTasks", JSON.stringify(tasks));
+        }
     });
 
     checklistItem.appendChild(checkbox);
@@ -325,5 +334,58 @@ document.querySelector("#checklist-form").addEventListener("submit", function (e
     checklistItem.appendChild(deleteButton);
 
     document.querySelector("#checklist-box").appendChild(checklistItem);
+}
+
+if (storageAvailable("localStorage")) {
+    console.log("localStorage is available.");
+    if (localStorage.getItem("checklistTasks")) {
+        tasks = JSON.parse(localStorage.getItem("checklistTasks"));
+    }
+}
+
+for (let task of tasks) {
+    createTask(task);
+}
+
+document.querySelector("#checklist-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const input = document.querySelector("#checklist-input");
+    const taskText = input.value.trim();
+    if (taskText === "") return;
+
+    tasks.push({ text: taskText, completed: false });
+
+    if (storageAvailable("localStorage")) {
+        localStorage.setItem("checklistTasks", JSON.stringify(tasks));
+    }
+
+    createTask(tasks[tasks.length - 1]);
+
     input.value = "";
 });
+
+function storageAvailable(type) {
+    // Documentation from MDN, checks if localStorage is available
+    try {
+        var storage = window[type],
+            x = "__storage_test__";
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch (e) {
+        return (
+            e instanceof DOMException &&
+            // everything except Firefox
+            (e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === "QuotaExceededError" ||
+                // Firefox
+                e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage.length !== 0
+        );
+    }
+}
