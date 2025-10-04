@@ -8,6 +8,7 @@ class Timer {
         this.seconds = 0;
         this.running = false;
         this.interval = null;
+        this.timerSfx = new Audio("src/audio/timerFinishedSfx.mp3");
     }
 
     set(h = 0, m = 0, s = 0) {
@@ -38,6 +39,7 @@ class Timer {
             this.seconds = 59;
         } else {
             console.log("Timer finished");
+            this.timerSfx.play();
             this.pause();
             return;
         }
