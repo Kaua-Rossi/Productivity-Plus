@@ -296,7 +296,7 @@ document.querySelector("#start-button").addEventListener("click", () => mainTime
 document.querySelector("#stop-button").addEventListener("click", () => mainTimer.pause());
 document.querySelector("#reset-button").addEventListener("click", () => mainTimer.reset());
 
-let tasks = [{}];
+let tasks = [];
 
 function createTask(task) {
     const checklistItem = document.createElement("div");
