@@ -6,6 +6,7 @@ export class Timer {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
+        this.milliseconds = 0;
         this.running = false;
         this.interval = null; // To hold the setInterval reference
         this.timerSfx = new Audio("src/audio/timerFinishedSfx.mp3");
@@ -13,29 +14,41 @@ export class Timer {
 
     updateDisplay() {
         this.stateTextElement.textContent = this.running ? "Running" : "Paused";
-        this.displayElement.textContent = String(this.hours).padStart(2, "0") + ":" + String(this.minutes).padStart(2, "0") + ":" + String(this.seconds).padStart(2, "0");
+        this.displayElement.textContent =
+            String(this.hours).padStart(2, "0") +
+            ":" +
+            String(this.minutes).padStart(2, "0") +
+            ":" +
+            String(this.seconds).padStart(2, "0") +
+            ":" +
+            String(this.milliseconds).padStart(2, "0");
     }
 
     set(h = 0, m = 0, s = 0) {
         this.hours = parseInt(h) || 0;
         this.minutes = parseInt(m) || 0;
         this.seconds = parseInt(s) || 0;
+        this.milliseconds = 0;
         this.updateDisplay();
         console.log(`${this.type} set to ${this.displayElement.textContent}`);
     }
 
     tick() {
         if (!this.running) return;
-
-        if (this.seconds > 0) {
+        if (this.milliseconds > 0) {
+            this.milliseconds--;
+        } else if (this.seconds > 0) {
             this.seconds--;
+            this.milliseconds = 99;
         } else if (this.minutes > 0) {
             this.minutes--;
             this.seconds = 59;
+            this.milliseconds = 99;
         } else if (this.hours > 0) {
             this.hours--;
             this.minutes = 59;
             this.seconds = 59;
+            this.milliseconds = 99;
         } else {
             this.timerSfx.play();
             this.pause();
@@ -48,7 +61,7 @@ export class Timer {
     start() {
         if (this.running) return;
         this.running = true;
-        this.interval = setInterval(() => this.tick(), 1000);
+        this.interval = setInterval(() => this.tick(), 10);
         console.log(`${this.type} started`);
     }
 
@@ -76,9 +89,12 @@ export class Stopwatch extends Timer {
     tick() {
         if (!this.running) return;
 
-        this.seconds++;
+        this.milliseconds++;
 
-        if (this.seconds >= 60) {
+        if (this.milliseconds >= 100) {
+            this.milliseconds = 0;
+            this.seconds++;
+        } else if (this.seconds >= 60) {
             this.seconds = 0;
             this.minutes++;
         } else if (this.minutes >= 60) {
@@ -98,6 +114,7 @@ export class Pomodoro extends Timer {
         this.bigBreakMinutes = 15;
         this.minutes = this.workMinutes;
         this.seconds = 0;
+        this.milliseconds = 0;
         this.pomodorosCompleted = 0;
         this.workSfx = new Audio("src/audio/breakFinishedSfx.mp3");
         this.breakSfx = new Audio("src/audio/breakReachedSfx.mp3");
@@ -111,6 +128,7 @@ export class Pomodoro extends Timer {
         this.bigBreakMinutes = parseInt(bbm) || 0;
         this.minutes = this.workMinutes;
         this.seconds = 0;
+        this.milliseconds = 0;
         this.working = true;
         this.updateDisplay();
         console.log(`${this.type} set to ${this.displayElement.textContent}`);
@@ -118,17 +136,21 @@ export class Pomodoro extends Timer {
 
     updateDisplay() {
         this.stateTextElement.textContent = this.working ? "Work Time" : this.pomodorosCompleted % 4 === 0 ? "Big Break Time" : "Break Time";
-        this.displayElement.textContent = String(this.minutes).padStart(2, "0") + ":" + String(this.seconds).padStart(2, "0");
+        this.displayElement.textContent = String(this.minutes).padStart(2, "0") + ":" + String(this.seconds).padStart(2, "0") + ":" + String(this.milliseconds).padStart(2, "0");
     }
 
     tick() {
         if (!this.running) return;
 
-        if (this.seconds > 0) {
+        if (this.milliseconds > 0) {
+            this.milliseconds--;
+        } else if (this.seconds > 0) {
             this.seconds--;
+            this.milliseconds = 99;
         } else if (this.minutes > 0) {
             this.minutes--;
             this.seconds = 59;
+            this.milliseconds = 99;
         } else {
             if (this.working) {
                 this.pomodorosCompleted++;
@@ -147,6 +169,7 @@ export class Pomodoro extends Timer {
             }
             this.working = !this.working;
             this.seconds = 0;
+            this.milliseconds = 0;
             this.pause();
         }
         this.updateDisplay();
